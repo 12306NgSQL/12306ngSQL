@@ -7,10 +7,10 @@
     <artifactId>ngsql-parent</artifactId>
     <version>1.0.0</version>
   </parent>
-  <artifactId>ngsql-parser</artifactId>
+  <artifactId>ngsql-server</artifactId>
   <version>${app.version}</version>
   <packaging>jar</packaging>
-  <name>ngsql-parser</name>
+  <name>ngsql-server</name>
   <url>http://maven.apache.org</url>
 
 </project>

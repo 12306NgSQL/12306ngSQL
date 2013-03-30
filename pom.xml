@@ -1,0 +1,71 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.ng12306.ngsql</groupId>
+  <artifactId>ngsql-parent</artifactId>
+  <version>1.0.0</version>
+  <packaging>pom</packaging>
+  <name>${artifactId}</name>
+  <description>the parent project of ngsql</description>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <app.encoding>UTF-8</app.encoding>
+    <app.version>1.0.0</app.version>
+  </properties>
+
+  <modules>
+    <module>ngsql-net</module>
+    <module>ngsql-parser</module>
+    <module>ngsql-route</module>
+    <module>ngsql-server</module>
+  </modules>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.10</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+          <encoding>${app.encoding}</encoding>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>2.1.2</version>
+        <configuration>
+          <encoding>${app.encoding}</encoding>
+          <attach>true</attach>
+        </configuration>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar-no-fork</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-eclipse-plugin</artifactId>
+        <configuration>
+          <downloadSources>true</downloadSources>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
