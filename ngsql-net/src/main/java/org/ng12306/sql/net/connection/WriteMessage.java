@@ -1,7 +1,7 @@
-package net.connection;
+package org.ng12306.sql.net.connection;
 
 /**
- * ´¦ÀíĞ´Êı¾İ±¨ÎÄ²Ù ×÷
+ * å¤„ç†å†™æ•°æ®æŠ¥æ–‡æ“ ä½œ
  * @author lvbo
  *
  */

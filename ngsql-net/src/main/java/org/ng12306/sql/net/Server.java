@@ -1,10 +1,10 @@
-package net;
+package org.ng12306.sql.net;
 
 import java.io.IOException;
 import java.util.TimerTask;
 
 /**
- * ·şÎñ¶Ë
+ * æœåŠ¡ç«¯
  * @author lvbo
  *
  */
@@ -12,9 +12,9 @@ public class Server {
 
 	private static final Server INSTANCE = new Server();
 	
-	private NIOProcessor[] processors;
-    private NIOConnector connector;
-    private NIOAcceptor server;
+	private Processor[] processors;
+    private Connector connector;
+    private Acceptor server;
 	
 	public static final Server getInstance() {
         return INSTANCE;
@@ -23,52 +23,40 @@ public class Server {
 	private Server() {}
 	
 	/**
-	 * ´¦ÀíÒ»Ğ©Ô¤¼ÓÔØÄÚÈİ
+	 * ï¿½ï¿½ï¿½ï¿½Ò»Ğ©Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 * @param dateFormat
 	 */
 	public void beforeStart(String dateFormat) {}
 	
 	/**
-	 * Æô¶¯·şÎñ
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½
 	 * @throws IOException
 	 */
 	public void startup() throws IOException {}
 
-	public NIOProcessor[] getProcessors() {
+	public Processor[] getProcessors() {
 		return processors;
 	}
 
-	public void setProcessors(NIOProcessor[] processors) {
+	public void setProcessors(Processor[] processors) {
 		this.processors = processors;
 	}
 
-	public NIOConnector getConnector() {
+	public Connector getConnector() {
 		return connector;
 	}
 
-	public void setConnector(NIOConnector connector) {
+	public void setConnector(Connector connector) {
 		this.connector = connector;
 	}
 
-	public NIOAcceptor getServer() {
+	public Acceptor getServer() {
 		return server;
 	}
 
-	public void setServer(NIOAcceptor server) {
+	public void setServer(Acceptor server) {
 		this.server = server;
 	}
-	
-	/**
-	 * Êı¾İ½Úµã¶¨Ê±Á¬½Ó¿ÕÏĞ³¬Ê±¼ì²éÈÎÎñ
-	 * @return
-	 */
-	private TimerTask dataNodeIdleCheck() {}
-	
-	/**
-	 * ¶¨Ê±ĞÄÌø¼ì²é
-	 * @return
-	 */
-	private TimerTask dataNodeHeartbeat() {}
 	
 	
 }

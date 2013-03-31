@@ -1,62 +1,62 @@
-package net.connection;
+package org.ng12306.sql.net.connection;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.Selector;
 
 /**
- * Êı¾İÁ¬½Ó²Ù×÷½Ó¿Ú
+ * æ•°æ®è¿æ¥æ“ä½œæ¥å£
  * @author lvbo
  *
  */
-public interface NIOConnection {
+public interface Connection {
 
 	/**
-	 * ×¢²áÍøÂçÊÂ¼ş
+	 * æ³¨å†Œç½‘ç»œäº‹ä»¶
 	 * @param selector
 	 * @throws IOException
 	 */
     void register(Selector selector) throws IOException;
 
     /**
-     * ¶ÁÈ¡Êı¾İ
+     * è¯»å–æ•°æ®
      * @throws IOException
      */
     void read() throws IOException;
 
     /**
-     * ´¦ÀíÊı¾İ
+     * å¤„ç†æ•°æ®
      * @param data
      */
     void handle(byte[] data);
 
     /**
-     * Ğ´³öÒ»¿é»º´æÊı¾İ
+     * å†™å‡ºä¸€å—ç¼“å­˜æ•°æ®
      * @param buffer
      */
     void write(ByteBuffer buffer);
 
     /**
-     * »ùÓÚ´¦ÀíÆ÷¶ÓÁĞµÄ·½Ê½Ğ´Êı¾İ
+     * åŸºäºå¤„ç†å™¨é˜Ÿåˆ—çš„æ–¹å¼å†™æ•°æ®
      * @throws IOException
      */
     void writeByQueue() throws IOException;
 
     /**
-     * »ùÓÚ¼àÌıÊÂ¼şµÄ·½Ê½Ğ´Êı¾İ
+     * åŸºäºç›‘å¬äº‹ä»¶çš„æ–¹å¼å†™æ•°æ®
      * @throws IOException
      */
     void writeByEvent() throws IOException;
 
     /**
-     * ·¢Éú´íÎó
+     * å‘ç”Ÿé”™è¯¯
      * @param errCode
      * @param t
      */
     void error(int errCode, Throwable t);
 
     /**
-     * ¹Ø±ÕÁ¬½Ó
+     * å…³é—­è¿æ¥
      * @return
      */
     boolean close();

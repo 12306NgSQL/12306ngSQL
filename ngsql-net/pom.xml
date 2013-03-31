@@ -12,5 +12,25 @@
   <packaging>jar</packaging>
   <name>ngsql-net</name>
   <url>http://maven.apache.org</url>
+  
+  <dependencies>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.16</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.8.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.jsr166-mirror</groupId>
+      <artifactId>jsr166y</artifactId>
+      <version>1.7.0</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 
 </project>

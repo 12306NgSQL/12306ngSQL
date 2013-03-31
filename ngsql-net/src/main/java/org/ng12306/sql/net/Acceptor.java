@@ -1,4 +1,4 @@
-package net;
+package org.ng12306.sql.net;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -6,22 +6,23 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 
-import net.connection.FrontendConnectionFactory;
+import org.ng12306.sql.net.connection.FrontendConnectionFactory;
+
 
 /**
- * 接收前端数据
+ * 鎺ユ敹鍓嶇鏁版嵁
  * @author lvbo
  *
  */
-public class NIOAcceptor extends Thread {
+public class Acceptor extends Thread {
 
 	private final int port;
     private final Selector selector;
     private final ServerSocketChannel serverChannel;
     private final FrontendConnectionFactory factory;
-    private NIOProcessor[] processors;
+    private Processor[] processors;
     
-    public NIOAcceptor(String name, int port, FrontendConnectionFactory factory) throws IOException {
+    public Acceptor(String name, int port, FrontendConnectionFactory factory) throws IOException {
         super.setName(name);
         this.port = port;
         this.selector = Selector.open();
@@ -38,7 +39,7 @@ public class NIOAcceptor extends Thread {
     }
     
     /**
-     * 接收处理前端数据
+     * 鎺ユ敹澶勭悊鍓嶇鏁版嵁
      */
     private void accept() {
     	
