@@ -12,5 +12,12 @@
   <packaging>jar</packaging>
   <name>ngsql-server</name>
   <url>http://maven.apache.org</url>
-
+  
+  <dependencies>
+    <dependency>
+      <groupId>org.ng12306.ngsql</groupId>
+      <artifactId>ngsql-net</artifactId>
+      <version>${app.version}</version>
+    </dependency>
+  </dependencies>
 </project>

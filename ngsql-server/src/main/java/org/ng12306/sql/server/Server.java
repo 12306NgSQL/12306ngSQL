@@ -1,7 +1,10 @@
-package org.ng12306.sql.net;
+package org.ng12306.sql.server;
 
 import java.io.IOException;
-import java.util.TimerTask;
+
+import org.ng12306.sql.net.Acceptor;
+import org.ng12306.sql.net.Connector;
+import org.ng12306.sql.net.Processor;
 
 /**
  * 服务端
@@ -23,13 +26,13 @@ public class Server {
 	private Server() {}
 	
 	/**
-	 * ����һЩԤ��������
+	 * 处理一些预加载内容
 	 * @param dateFormat
 	 */
 	public void beforeStart(String dateFormat) {}
 	
 	/**
-	 * �����
+	 * 启动服务
 	 * @throws IOException
 	 */
 	public void startup() throws IOException {}
