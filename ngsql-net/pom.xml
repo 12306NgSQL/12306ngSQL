@@ -15,6 +15,11 @@
   
   <dependencies>
     <dependency>
+      <groupId>org.ng12306.ngsql</groupId>
+      <artifactId>ngsql-util</artifactId>
+      <version>${app.version}</version>
+    </dependency>
+    <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
       <version>1.2.16</version>

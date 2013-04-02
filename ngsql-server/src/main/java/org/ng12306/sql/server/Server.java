@@ -39,7 +39,21 @@ public class Server {
 	 * 启动服务
 	 * @throws IOException
 	 */
-	public void startup() throws IOException {}
+	public void startup() throws IOException {
+		// server startup
+        LOGGER.info("===============================================");
+        LOGGER.info(NAME + " is ready to startup ...");
+        
+        // startup processors
+        LOGGER.info("Startup processors ...");
+        processors = new Processor[4];
+        int handler = 2;
+        int executor = 4;
+        for (int i = 0; i < processors.length; i++) {
+            processors[i] = new Processor("Processor" + i, handler, executor);
+            processors[i].startup();
+        }
+	}
 
 	public Processor[] getProcessors() {
 		return processors;
