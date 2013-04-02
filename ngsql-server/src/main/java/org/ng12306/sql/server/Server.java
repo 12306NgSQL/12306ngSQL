@@ -2,6 +2,7 @@ package org.ng12306.sql.server;
 
 import java.io.IOException;
 
+import org.apache.log4j.Logger;
 import org.ng12306.sql.net.Acceptor;
 import org.ng12306.sql.net.Connector;
 import org.ng12306.sql.net.Processor;
@@ -12,6 +13,9 @@ import org.ng12306.sql.net.Processor;
  *
  */
 public class Server {
+	
+	public static final String NAME = "NgSql";
+	private static final Logger LOGGER = Logger.getLogger(Server.class);
 
 	private static final Server INSTANCE = new Server();
 	
