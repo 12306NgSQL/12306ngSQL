@@ -1,7 +1,7 @@
 package org.ng12306.ngsql.util;
 
 /**
- * Hello world!
+ * Hello world !
  *
  */
 public class App 
