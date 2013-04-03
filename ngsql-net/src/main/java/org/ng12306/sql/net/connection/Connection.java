@@ -43,7 +43,7 @@ public interface Connection {
     void writeByQueue() throws IOException;
 
     /**
-     * 基于监听事件的方式写数 据
+     * 基于监听事件的方式写数据
      * @throws IOException
      */
     void writeByEvent() throws IOException;
