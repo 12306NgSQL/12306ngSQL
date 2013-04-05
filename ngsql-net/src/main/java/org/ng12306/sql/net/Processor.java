@@ -28,4 +28,8 @@ public class Processor {
     	
     	this.reactor = new Reactor(name);
     }
+    
+    public void startup() {
+        reactor.startup();
+    }
 }
