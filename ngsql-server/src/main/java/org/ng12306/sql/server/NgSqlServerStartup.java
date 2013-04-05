@@ -17,8 +17,7 @@ public class NgSqlServerStartup {
             // init
         	ServerSocketChannel serverChannel = ServerSocketChannel.open();
         	serverChannel.socket().bind(new InetSocketAddress(9066));
-        	System.setProperty("cobar.home", "D:\\dev\\jdworkspace6\\cobar-server");
-            Server server = Server.getInstance();
+        	Server server = Server.getInstance();
             server.beforeStart(dateFormat);
 
             //startup
