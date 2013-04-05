@@ -7,7 +7,13 @@ import java.util.Date;
 
 import org.apache.log4j.helpers.LogLog;
 
-
+/**
+ * 
+* [添加说明]
+* @author: lvbo
+* @date: 2013-4-5 下午4:10:39
+* @version: 1.0
+ */
 public class NgSqlServerStartup {
 
 	private static final String dateFormat = "yyyy-MM-dd HH:mm:ss";
@@ -21,7 +27,7 @@ public class NgSqlServerStartup {
             server.beforeStart(dateFormat);
 
             //startup
-            //server.startup();
+            server.startup();
         } catch (Throwable e) {
             SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
             LogLog.error(sdf.format(new Date()) + " startup error", e);
