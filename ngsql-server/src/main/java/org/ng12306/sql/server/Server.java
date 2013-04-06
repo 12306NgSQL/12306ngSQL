@@ -22,12 +22,15 @@ public class Server {
 	private Processor[] processors;
     private Connector connector;
     private Acceptor server;
+    private final NgSqlConfig config;
 	
 	public static final Server getInstance() {
         return INSTANCE;
     }
 	
-	private Server() {}
+	private Server() {
+		this.config = new NgSqlConfig();
+	}
 	
 	/**
 	 * 处理一些预加载内容
@@ -79,5 +82,7 @@ public class Server {
 		this.server = server;
 	}
 	
-	
+	public NgSqlConfig getConfig() {
+        return config;
+    }
 }
