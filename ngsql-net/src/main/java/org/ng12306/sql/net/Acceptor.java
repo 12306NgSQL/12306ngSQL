@@ -7,7 +7,7 @@ import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 
 import org.ng12306.sql.net.Processor;
-import org.ng12306.sql.net.factory.FrontendConnectionFactory;
+import org.ng12306.sql.net.connection.FrontendConnectionFactory;
 
 
 /**
@@ -20,7 +20,7 @@ public class Acceptor extends Thread {
 	private final int port;
     private final Selector selector;
     private final ServerSocketChannel serverChannel;
-    private FrontendConnectionFactory factory;
+    private final FrontendConnectionFactory factory;
     private Processor[] processors;
     
     public Acceptor(String name, int port, FrontendConnectionFactory factory) throws IOException {
@@ -45,12 +45,5 @@ public class Acceptor extends Thread {
     private void accept() {
     	
     }
-    
-    public void setProcessors(Processor[] processors) {
-        this.processors = processors;
-    }
-    
-    public int getPort() {
-        return port;
-    }
 }
+>>>>>>> nothing
