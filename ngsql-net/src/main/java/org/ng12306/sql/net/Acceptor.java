@@ -46,4 +46,3 @@ public class Acceptor extends Thread {
     	
     }
 }
->>>>>>> nothing
