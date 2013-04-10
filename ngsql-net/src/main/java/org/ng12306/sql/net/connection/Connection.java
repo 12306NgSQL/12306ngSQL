@@ -60,4 +60,6 @@ public interface Connection {
      * @return
      */
     boolean close();
+    
+   
 }

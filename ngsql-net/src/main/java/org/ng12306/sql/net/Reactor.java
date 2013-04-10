@@ -138,4 +138,8 @@ public class Reactor {
             }
         }
     }
+    
+    final void postWrite(Connection c) {
+        reactorW.writeQueue.offer(c);
+    }
 }

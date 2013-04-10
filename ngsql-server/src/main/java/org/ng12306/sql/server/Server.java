@@ -3,6 +3,7 @@ package org.ng12306.sql.server;
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
+import org.ng12306.ngsql.model.SystemConfig;
 import org.ng12306.sql.net.Acceptor;
 import org.ng12306.sql.net.Connector;
 import org.ng12306.sql.net.Processor;
@@ -30,6 +31,7 @@ public class Server {
 	
 	private Server() {
 		this.config = new NgSqlConfig();
+		SystemConfig system = config.getSystem();
 	}
 	
 	/**
@@ -46,7 +48,7 @@ public class Server {
 		// server startup
         LOGGER.info("===============================================");
         LOGGER.info(NAME + " is ready to startup ...");
-        
+        SystemConfig system = config.getSystem();
         // startup processors
         LOGGER.info("Startup processors ...");
         processors = new Processor[4];
@@ -56,6 +58,24 @@ public class Server {
             processors[i] = new Processor("Processor" + i, handler, executor);
             processors[i].startup();
         }
+        
+        // startup connector
+        LOGGER.info("Startup connector ...");
+        connector = new Connector(NAME + "Connector");
+        connector.setProcessors(processors);
+        connector.start();
+        
+        // startup server
+        ServerConnectionFactory sf = new ServerConnectionFactory();
+        sf.setCharset(system.getCharset());
+        sf.setIdleTimeout(system.getIdleTimeout());
+        server = new Acceptor(NAME + "Server", system.getServerPort(), sf);
+        server.setProcessors(processors);
+        server.start();
+        
+        // server started
+        LOGGER.info(server.getName() + " is started and listening on " + server.getPort());
+        LOGGER.info("===============================================");
 	}
 
 	public Processor[] getProcessors() {

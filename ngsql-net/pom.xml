@@ -16,7 +16,7 @@
   <dependencies>
     <dependency>
       <groupId>org.ng12306.ngsql</groupId>
-      <artifactId>ngsql-util</artifactId>
+      <artifactId>ngsql-route</artifactId>
       <version>${app.version}</version>
     </dependency>
     <dependency>
