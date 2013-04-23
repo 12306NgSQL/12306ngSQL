@@ -13,4 +13,11 @@
   <name>ngsql-parser</name>
   <url>http://maven.apache.org</url>
 
+  <dependencies>
+	<dependency>
+      <groupId>org.ng12306.ngsql</groupId>
+      <artifactId>ngsql-util</artifactId>
+      <version>${app.version}</version>
+    </dependency>
+   </dependencies>
 </project>

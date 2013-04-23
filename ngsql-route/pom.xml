@@ -13,10 +13,10 @@
   <name>ngsql-route</name>
   <url>http://maven.apache.org</url>
 
-	<dependencies>
+  <dependencies>
     <dependency>
       <groupId>org.ng12306.ngsql</groupId>
-      <artifactId>ngsql-util</artifactId>
+      <artifactId>ngsql-parser</artifactId>
       <version>${app.version}</version>
     </dependency>
     <dependency>
