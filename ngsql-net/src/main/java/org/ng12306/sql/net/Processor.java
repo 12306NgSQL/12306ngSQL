@@ -17,6 +17,9 @@ package org.ng12306.sql.net;
 
 import java.io.IOException;
 
+import org.ng12306.sql.net.buffer.BufferPool;
+import org.ng12306.sql.net.connection.Connection;
+
 /**
  * 处理前端请求、释放资源等操作
  * @author lvbo
@@ -29,6 +32,9 @@ public class Processor {
     private static final int AVAILABLE_PROCESSORS = Runtime.getRuntime().availableProcessors();
     
 	private final Reactor reactor;
+	private BufferPool bufferPool;
+	private long netInBytes;
+	private long netOutBytes;
 	
 	public Processor(String name) throws IOException {
 		
@@ -46,5 +52,21 @@ public class Processor {
     
     public void startup() {
         reactor.startup();
+    }
+    
+    public BufferPool getBufferPool() {
+        return bufferPool;
+    }
+    
+    public void addNetInBytes(long bytes) {
+        netInBytes += bytes;
+    }
+    
+    public void postWrite(Connection c) {
+        reactor.postWrite(c);
+    }
+    
+    public void addNetOutBytes(long bytes) {
+        netOutBytes += bytes;
     }
 }
