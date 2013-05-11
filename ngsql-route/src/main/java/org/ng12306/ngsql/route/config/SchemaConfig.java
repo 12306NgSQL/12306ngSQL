@@ -18,7 +18,7 @@ package org.ng12306.ngsql.route.config;
 import java.util.Map;
 
 /*-
- * @author:Fredric
+ * @author:Fredric 
  * @date: 2013-5-11
  */
 public final class SchemaConfig {
