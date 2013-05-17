@@ -1,0 +1,12 @@
+<ngsql:rule> 
+    <tableRule name="testRule">
+        <rule>
+        	<columns>id</columns>
+      		<algorithm><![CDATA[ func(${id})]]></algorithm>    
+        </rule>
+    </tableRule>
+    <function name="func" class="com.ng12306.ngsql.function">
+    	<property name="partitionCount">128</property>
+    	<property name="partitionLength">8</property>
+  </function>
+</ngsql:rule>

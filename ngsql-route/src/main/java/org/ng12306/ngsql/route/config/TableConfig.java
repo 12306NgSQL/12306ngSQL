@@ -27,5 +27,4 @@ public final class TableConfig {
 		this.name = name;
 		this.rule = rule;
 	}
-	
 }

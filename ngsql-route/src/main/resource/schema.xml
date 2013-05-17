@@ -1,0 +1,15 @@
+<ngsql:schema>
+    <schema name="cndb">
+		<table name="tb_1" dataNode="db_dn$1-127" rule="testRule"/>   
+    <schema name="cndb"> 
+    
+ 	<dataNode name="db_dn">  
+    	<property name="dataSource">
+      		<location>127.0.0.1:3306/offer$0-2</location>
+    	</property>
+    	<property name="user">root</property>
+    	<property name="password">root</property>
+    	<property name="sqlMode">STRICT_TRANS_TABLES</property> 
+    	</property>  
+  	</dataNode>
+</ngsql:schema>

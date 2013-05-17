@@ -13,26 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ng12306.ngsql.route;
-
-import org.ng12306.ngsql.route.config.SchemaConfig;
+package org.ng12306.ngsql.route.visitor;
 
 /*-
+ * 支持字符类型的ID，按照字符数值的区间分区，实现单维路由
  * @author:Fredric
- * @date: 2013-5-10
+ * @date: 2013-5-17
  */
-public final class ServerRouter {
+public class PartitionKeyVisitor {
 	
-	public static RouteResultset route(SchemaConfig config, String stmt){
+	/*-
+	 * 处理insert操作
+	 */
+	public void visit() {
 		
-		RouteResultset rrs = new RouteResultset(stmt);
-		
-		/*生成AST，通过SQLLexer的词法分析和parse的语法分析*/
-		
-		//匹配规则
-		
-		//路由处理
-				
-		return rrs;
 	}
 }
