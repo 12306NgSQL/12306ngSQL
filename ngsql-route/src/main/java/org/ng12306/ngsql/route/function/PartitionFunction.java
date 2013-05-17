@@ -13,26 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ng12306.ngsql.route;
-
-import org.ng12306.ngsql.route.config.SchemaConfig;
+package org.ng12306.ngsql.route.function;
 
 /*-
+ * 数据库拆分抽象类，对应rule.xml的function字段
  * @author:Fredric
- * @date: 2013-5-10
+ * @date: 2013-5-17
  */
-public final class ServerRouter {
-	
-	public static RouteResultset route(SchemaConfig config, String stmt){
-		
-		RouteResultset rrs = new RouteResultset(stmt);
-		
-		/*生成AST，通过SQLLexer的词法分析和parse的语法分析*/
-		
-		//匹配规则
-		
-		//路由处理
-				
-		return rrs;
-	}
+public abstract class PartitionFunction {
+	   
+	   protected int count; //rule.xml的partitionCount字段
+	   protected int length;//rule.xml的partitionLength字段
+	   
+	    public void setPartitionCount(String partitionCount) {
+	        this.count = Integer.parseInt(partitionCount);
+	    }
+
+	    public void setPartitionLength(String partitionLength) {
+	        this.length = Integer.parseInt(partitionLength);
+	    }
 }
