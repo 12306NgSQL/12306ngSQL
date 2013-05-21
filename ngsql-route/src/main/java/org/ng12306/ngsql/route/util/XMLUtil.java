@@ -27,7 +27,7 @@ import org.w3c.dom.Document;
  * @date: 2013-5-11
  */
 public class XMLUtil {
-	private DocumentBuilder db;
+	private DocumentBuilder  db;
 	
 	public XMLUtil(){
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
