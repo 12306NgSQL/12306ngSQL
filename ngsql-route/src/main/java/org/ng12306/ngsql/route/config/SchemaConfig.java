@@ -15,6 +15,7 @@
  */
 package org.ng12306.ngsql.route.config;
 
+import java.util.List;
 import java.util.Map;
 
 /*-
@@ -23,25 +24,24 @@ import java.util.Map;
  */
 public final class SchemaConfig {
 	private String name;
-	private String datanode;
+	private List<DataNode> dataNodes;
 	private final Map<String, TableConfig> tables;
 	
-	public SchemaConfig(String name, String datanode, Map<String, TableConfig> tables){
-		this.name 	  = name;
-		this.datanode = datanode;
-		this.tables   = tables;
+	public SchemaConfig(String name, List<DataNode> dataNodes,Map<String, TableConfig> tables){
+		this.name 	   = name;
+		this.tables    = tables;
+		this.dataNodes = dataNodes;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	public void setName(String name) {
-		this.name = name;
+
+	public List<DataNode> getDataNodes() {
+		return dataNodes;
 	}
-	public String getDatanode() {
-		return datanode;
-	}
-	public void setDatanode(String datanode) {
-		this.datanode = datanode;
+
+	public Map<String, TableConfig> getTables() {
+		return tables;
 	}
 }

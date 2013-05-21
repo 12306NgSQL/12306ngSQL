@@ -16,37 +16,37 @@
 package org.ng12306.ngsql.route.config;
 
 /*-
+ * 对应rule.xml的tableRule节点
  * @author:Fredric
  * @date: 2013-5-11
  */
 public final class TableRuleConfig {
 	private String name;
-	private RuleConfig rule[];
+	private RuleConfig[] rules;
 	
-	
-	public static final class RuleConfig {
-		private String tableRuleName;
-		private String[] columes;
-		
+	public TableRuleConfig(String name, RuleConfig[] rules){
+		this.name  = name;
+		this.rules = rules; 
 	}
-
+	
+	/*-
+	 * RuleConfig对应rule.xml，rule节点
+	 */
+	public static final class RuleConfig {
+		private final String[] columes;
+		private final String function;
+		
+		public RuleConfig(String[] columes, String function){
+			this.columes  = (columes == null ? new String[0]:columes);
+			this.function = function;
+		}		
+	}
 
 	public String getName() {
 		return name;
 	}
 
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-
-	public RuleConfig[] getRule() {
-		return rule;
-	}
-
-
-	public void setRule(RuleConfig[] rule) {
-		this.rule = rule;
+	public RuleConfig[] getRules() {
+		return rules;
 	}
 }

@@ -21,10 +21,27 @@ package org.ng12306.ngsql.route.config;
  */
 public final class TableConfig {
 	private String name;
+	private String[] datanodes;
 	private final TableRuleConfig rule;
 	
-	public TableConfig(String name, TableRuleConfig rule){
+	public TableConfig(String name, String datanodes,TableRuleConfig rule){
 		this.name = name;
 		this.rule = rule;
+		this.datanodes = datanodes.split(",");
+		if((this.datanodes == null)||(this.datanodes.length <= 0)){
+			throw new IllegalArgumentException("TableConfig Argu Error:"+datanodes);
+		}
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String[] getDatanode() {
+		return datanodes;
+	}
+
+	public TableRuleConfig getRule() {
+		return rule;
 	}
 }
