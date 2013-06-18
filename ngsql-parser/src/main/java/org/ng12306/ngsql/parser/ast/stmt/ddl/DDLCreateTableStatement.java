@@ -18,14 +18,15 @@ package org.ng12306.ngsql.parser.ast.stmt.ddl;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.alibaba.cobar.parser.ast.expression.Expression;
-import com.alibaba.cobar.parser.ast.expression.primary.Identifier;
-import com.alibaba.cobar.parser.ast.fragment.ddl.ColumnDefinition;
-import com.alibaba.cobar.parser.ast.fragment.ddl.TableOptions;
-import com.alibaba.cobar.parser.ast.fragment.ddl.index.IndexDefinition;
-import com.alibaba.cobar.parser.ast.stmt.dml.DMLSelectStatement;
-import com.alibaba.cobar.parser.util.Pair;
-import com.alibaba.cobar.parser.visitor.SQLASTVisitor;
+import org.ng12306.ngsql.parser.ast.expression.Expression;
+import org.ng12306.ngsql.parser.ast.expression.primary.Identifier;
+import org.ng12306.ngsql.parser.ast.fragment.ddl.ColumnDefinition;
+import org.ng12306.ngsql.parser.ast.fragment.ddl.TableOptions;
+import org.ng12306.ngsql.parser.ast.fragment.ddl.index.IndexDefinition;
+import org.ng12306.ngsql.parser.ast.stmt.dml.DMLSelectStatement;
+import org.ng12306.ngsql.parser.util.Pair;
+import org.ng12306.ngsql.parser.visitor.SQLASTVisitor;
+
 
 /**
  * 
