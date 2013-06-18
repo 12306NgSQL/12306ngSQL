@@ -20,13 +20,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.alibaba.cobar.parser.ast.expression.Expression;
-import com.alibaba.cobar.parser.ast.fragment.GroupBy;
-import com.alibaba.cobar.parser.ast.fragment.Limit;
-import com.alibaba.cobar.parser.ast.fragment.OrderBy;
-import com.alibaba.cobar.parser.ast.fragment.tableref.TableReferences;
-import com.alibaba.cobar.parser.util.Pair;
-import com.alibaba.cobar.parser.visitor.SQLASTVisitor;
+import org.ng12306.ngsql.parser.ast.expression.Expression;
+import org.ng12306.ngsql.parser.ast.fragment.GroupBy;
+import org.ng12306.ngsql.parser.ast.fragment.Limit;
+import org.ng12306.ngsql.parser.ast.fragment.OrderBy;
+import org.ng12306.ngsql.parser.ast.fragment.tableref.TableReferences;
+import org.ng12306.ngsql.parser.util.Pair;
+import org.ng12306.ngsql.parser.visitor.SQLASTVisitor;
+
+
 
 /**
  * 

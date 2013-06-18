@@ -17,8 +17,9 @@ package org.ng12306.ngsql.parser.ast.stmt.dml;
 
 import java.util.Map;
 
-import com.alibaba.cobar.parser.ast.expression.Expression;
-import com.alibaba.cobar.parser.ast.expression.misc.QueryExpression;
+import org.ng12306.ngsql.parser.ast.expression.Expression;
+import org.ng12306.ngsql.parser.ast.expression.misc.QueryExpression;
+
 
 /**
  * 

@@ -18,9 +18,10 @@ package org.ng12306.ngsql.parser.ast.stmt.dml;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.alibaba.cobar.parser.ast.expression.Expression;
-import com.alibaba.cobar.parser.ast.stmt.SQLStatement;
-import com.alibaba.cobar.parser.visitor.MySQLOutputASTVisitor;
+import org.ng12306.ngsql.parser.ast.expression.Expression;
+import org.ng12306.ngsql.parser.ast.stmt.SQLStatement;
+import org.ng12306.ngsql.parser.visitor.MySQLOutputASTVisitor;
+
 
 /**
  * 

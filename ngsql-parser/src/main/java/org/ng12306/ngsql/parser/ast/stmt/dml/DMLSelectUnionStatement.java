@@ -18,9 +18,10 @@ package org.ng12306.ngsql.parser.ast.stmt.dml;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.alibaba.cobar.parser.ast.fragment.Limit;
-import com.alibaba.cobar.parser.ast.fragment.OrderBy;
-import com.alibaba.cobar.parser.visitor.SQLASTVisitor;
+import org.ng12306.ngsql.parser.ast.fragment.Limit;
+import org.ng12306.ngsql.parser.ast.fragment.OrderBy;
+import org.ng12306.ngsql.parser.visitor.SQLASTVisitor;
+
 
 /**
  * 

@@ -17,12 +17,13 @@ package org.ng12306.ngsql.parser.ast.stmt.dml;
 
 import java.util.List;
 
-import com.alibaba.cobar.parser.ast.expression.Expression;
-import com.alibaba.cobar.parser.ast.expression.misc.QueryExpression;
-import com.alibaba.cobar.parser.ast.expression.primary.Identifier;
-import com.alibaba.cobar.parser.ast.expression.primary.RowExpression;
-import com.alibaba.cobar.parser.util.Pair;
-import com.alibaba.cobar.parser.visitor.SQLASTVisitor;
+import org.ng12306.ngsql.parser.ast.expression.Expression;
+import org.ng12306.ngsql.parser.ast.expression.misc.QueryExpression;
+import org.ng12306.ngsql.parser.ast.expression.primary.Identifier;
+import org.ng12306.ngsql.parser.ast.expression.primary.RowExpression;
+import org.ng12306.ngsql.parser.util.Pair;
+import org.ng12306.ngsql.parser.visitor.SQLASTVisitor;
+
 
 /**
  * 
