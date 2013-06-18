@@ -15,9 +15,10 @@
  */
 package org.ng12306.ngsql.parser.ast.stmt.ddl;
 
-import com.alibaba.cobar.parser.ast.expression.primary.Identifier;
-import com.alibaba.cobar.parser.ast.stmt.SQLStatement;
-import com.alibaba.cobar.parser.visitor.SQLASTVisitor;
+import org.ng12306.ngsql.parser.ast.expression.primary.Identifier;
+import org.ng12306.ngsql.parser.ast.stmt.SQLStatement;
+import org.ng12306.ngsql.parser.visitor.SQLASTVisitor;
+
 
 /**
  * 
