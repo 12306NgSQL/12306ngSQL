@@ -15,7 +15,8 @@
  */
 package org.ng12306.ngsql.parser.ast.stmt.ddl;
 
-import com.alibaba.cobar.parser.ast.stmt.SQLStatement;
+import org.ng12306.ngsql.parser.ast.stmt.SQLStatement;
+
 
 /**
  * 
