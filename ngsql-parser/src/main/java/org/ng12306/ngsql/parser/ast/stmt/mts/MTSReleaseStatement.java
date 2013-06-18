@@ -13,31 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ng12306.ngsql.parser.ast.stmt;
+package org.ng12306.ngsql.parser.ast.stmt.mts;
 
-import org.ng12306.ngsql.parser.ast.ASTNode;
+import org.ng12306.ngsql.parser.ast.expression.primary.Identifier;
+import org.ng12306.ngsql.parser.ast.stmt.SQLStatement;
+import org.ng12306.ngsql.parser.visitor.SQLASTVisitor;
 
 
 /**
  * 
 * [添加说明]
 * @author: <a href="mailto:lvbomr@gmail.com">lvbo</a>
-* @date: 2013-5-26 下午12:00:50
+* @date: 2013-5-26 上午11:59:29
 * @version: 1.0
  */
-public interface SQLStatement extends ASTNode {
-    public static enum StmtType {
-        DML_SELECT,
-        DML_DELETE,
-        DML_INSERT,
-        DML_REPLACE,
-        DML_UPDATE,
-        DML_CALL,
-        DAL_SET,
-        DAL_SHOW,
-        MTL_START,
-        /** COMMIT or ROLLBACK */
-        MTL_TERMINATE,
-        MTL_ISOLATION
+public class MTSReleaseStatement implements SQLStatement {
+    private final Identifier savepoint;
+
+    public MTSReleaseStatement(Identifier savepoint) {
+        if (savepoint == null) throw new IllegalArgumentException("savepoint is null");
+        this.savepoint = savepoint;
     }
+
+    public Identifier getSavepoint() {
+        return savepoint;
+    }
+
+    @Override
+    public void accept(SQLASTVisitor visitor) {
+        visitor.visit(this);
+    }
+
 }

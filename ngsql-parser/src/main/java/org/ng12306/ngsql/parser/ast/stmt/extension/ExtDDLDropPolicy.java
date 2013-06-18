@@ -13,31 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ng12306.ngsql.parser.ast.stmt;
+package org.ng12306.ngsql.parser.ast.stmt.extension;
 
-import org.ng12306.ngsql.parser.ast.ASTNode;
+import org.ng12306.ngsql.parser.ast.expression.primary.Identifier;
+import org.ng12306.ngsql.parser.ast.stmt.ddl.DDLStatement;
+import org.ng12306.ngsql.parser.visitor.SQLASTVisitor;
 
 
 /**
  * 
 * [添加说明]
 * @author: <a href="mailto:lvbomr@gmail.com">lvbo</a>
-* @date: 2013-5-26 下午12:00:50
+* @date: 2013-5-26 上午11:59:01
 * @version: 1.0
  */
-public interface SQLStatement extends ASTNode {
-    public static enum StmtType {
-        DML_SELECT,
-        DML_DELETE,
-        DML_INSERT,
-        DML_REPLACE,
-        DML_UPDATE,
-        DML_CALL,
-        DAL_SET,
-        DAL_SHOW,
-        MTL_START,
-        /** COMMIT or ROLLBACK */
-        MTL_TERMINATE,
-        MTL_ISOLATION
+public class ExtDDLDropPolicy implements DDLStatement {
+    private final Identifier policyName;
+
+    public ExtDDLDropPolicy(Identifier policyName) {
+        this.policyName = policyName;
     }
+
+    public Identifier getPolicyName() {
+        return policyName;
+    }
+
+    @Override
+    public void accept(SQLASTVisitor visitor) {
+        visitor.visit(this);
+    }
+
 }
