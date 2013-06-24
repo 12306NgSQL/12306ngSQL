@@ -15,6 +15,8 @@
  */
 package org.ng12306.ngsql.route.config;
 
+import org.ng12306.ngsql.parser.ast.expression.Expression;
+
 /*-
  * 对应rule.xml的tableRule节点
  * @author:Fredric
@@ -23,6 +25,7 @@ package org.ng12306.ngsql.route.config;
 public final class TableRuleConfig {
 	private String name;
 	private RuleConfig[] rules;
+	
 	
 	public TableRuleConfig(String name, RuleConfig[] rules){
 		this.name  = name;
@@ -33,13 +36,21 @@ public final class TableRuleConfig {
 	 * RuleConfig对应rule.xml，rule节点
 	 */
 	public static final class RuleConfig {
-		private final String[] columes;
-		private final String function;
+		private final String[] columns;
+		private final Expression algorithm;
 		
-		public RuleConfig(String[] columes, String function){
-			this.columes  = (columes == null ? new String[0]:columes);
-			this.function = function;
-		}		
+		public RuleConfig(String[] columes, Expression algorithm){
+			this.columns  = (columes == null ? new String[0]:columes);
+			this.algorithm = algorithm;
+		}
+		
+	    public String[] getColumns() {
+	        return columns;
+	    }
+	    
+	    public Expression getAlgorithm(){
+	    	return algorithm;
+	    }
 	}
 
 	public String getName() {
@@ -49,4 +60,5 @@ public final class TableRuleConfig {
 	public RuleConfig[] getRules() {
 		return rules;
 	}
+	
 }
