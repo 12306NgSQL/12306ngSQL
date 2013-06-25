@@ -15,13 +15,19 @@
  */
 package org.ng12306.ngsql.route.visitor;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.ng12306.ngsql.parser.ast.ASTNode;
+import org.ng12306.ngsql.parser.ast.expression.Expression;
 import org.ng12306.ngsql.parser.ast.expression.BinaryOperatorExpression;
 import org.ng12306.ngsql.parser.ast.expression.PolyadicOperatorExpression;
+import org.ng12306.ngsql.parser.ast.expression.ReplacableExpression;
 import org.ng12306.ngsql.parser.ast.expression.UnaryOperatorExpression;
 import org.ng12306.ngsql.parser.ast.expression.comparison.BetweenAndExpression;
 import org.ng12306.ngsql.parser.ast.expression.comparison.ComparisionEqualsExpression;
@@ -82,6 +88,7 @@ import org.ng12306.ngsql.parser.ast.fragment.tableref.OuterJoin;
 import org.ng12306.ngsql.parser.ast.fragment.tableref.StraightJoin;
 import org.ng12306.ngsql.parser.ast.fragment.tableref.SubqueryFactor;
 import org.ng12306.ngsql.parser.ast.fragment.tableref.TableRefFactor;
+import org.ng12306.ngsql.parser.ast.fragment.tableref.TableReference;
 import org.ng12306.ngsql.parser.ast.fragment.tableref.TableReferences;
 import org.ng12306.ngsql.parser.ast.stmt.dal.DALSetCharacterSetStatement;
 import org.ng12306.ngsql.parser.ast.stmt.dal.DALSetNamesStatement;
@@ -142,6 +149,7 @@ import org.ng12306.ngsql.parser.ast.stmt.mts.MTSReleaseStatement;
 import org.ng12306.ngsql.parser.ast.stmt.mts.MTSRollbackStatement;
 import org.ng12306.ngsql.parser.ast.stmt.mts.MTSSavepointStatement;
 import org.ng12306.ngsql.parser.ast.stmt.mts.MTSSetTransactionStatement;
+import org.ng12306.ngsql.parser.util.Pair;
 import org.ng12306.ngsql.parser.visitor.SQLASTVisitor;
 import org.ng12306.ngsql.route.config.TableConfig;
 
@@ -151,10 +159,67 @@ import org.ng12306.ngsql.route.config.TableConfig;
  * @date: 2013-5-17
  */
 public class PartitionKeyVisitor implements SQLASTVisitor{
+    
+	private static final Set<Class<? extends Expression>> VERDICT_PASS_THROUGH_WHERE =
+            new HashSet<Class<? extends Expression>>(6);
+    private static final Set<Class<? extends Expression>> GROUP_FUNC_PASS_THROUGH_SELECT =
+            new HashSet<Class<? extends Expression>>(5);
+    private static final Set<Class<? extends Expression>> PARTITION_OPERAND_SINGLE =
+            new HashSet<Class<? extends Expression>>(3);
+    
+    static {
+        VERDICT_PASS_THROUGH_WHERE.add(LogicalAndExpression.class);
+        VERDICT_PASS_THROUGH_WHERE.add(LogicalOrExpression.class);
+        VERDICT_PASS_THROUGH_WHERE.add(BetweenAndExpression.class);
+        VERDICT_PASS_THROUGH_WHERE.add(InExpression.class);
+        VERDICT_PASS_THROUGH_WHERE.add(ComparisionNullSafeEqualsExpression.class);
+        VERDICT_PASS_THROUGH_WHERE.add(ComparisionEqualsExpression.class);
+        GROUP_FUNC_PASS_THROUGH_SELECT.add(Count.class);
+        GROUP_FUNC_PASS_THROUGH_SELECT.add(Sum.class);
+        GROUP_FUNC_PASS_THROUGH_SELECT.add(Min.class);
+        GROUP_FUNC_PASS_THROUGH_SELECT.add(Max.class);
+        PARTITION_OPERAND_SINGLE.add(BetweenAndExpression.class);
+        PARTITION_OPERAND_SINGLE.add(ComparisionNullSafeEqualsExpression.class);
+        PARTITION_OPERAND_SINGLE.add(ComparisionEqualsExpression.class);
+    }
 	
+    private static boolean isVerdictPassthroughWhere(Expression node) {
+        if (node == null) return false;
+        return VERDICT_PASS_THROUGH_WHERE.contains(node.getClass());
+    }
+
+    private static boolean isGroupFuncPassthroughSelect(Expression node) {
+        if (node == null) return false;
+        return GROUP_FUNC_PASS_THROUGH_SELECT.contains(node.getClass());
+    }
+    
+    public static boolean isPartitionKeyOperandSingle(Expression expr, ASTNode parent) {
+        return parent == null
+               && expr instanceof ReplacableExpression
+               && PARTITION_OPERAND_SINGLE.contains(expr.getClass());
+    }
+    
+    public static boolean isPartitionKeyOperandIn(Expression expr, ASTNode parent) {
+        return expr != null && parent instanceof InExpression;
+    }
+    
+    public static final int GROUP_CANCEL = -1;
+    public static final int GROUP_NON = 0;
+    public static final int GROUP_SUM = 1;
+    public static final int GROUP_MIN = 2;
+    public static final int GROUP_MAX = 3;
+    private boolean verdictGroupFunc = true;
+    private int groupFuncType = GROUP_NON;
+    private boolean verdictColumn = true;
+    private long limitSize = -1L;
+    private int idLevel = 2;
 	private final Map<String, TableConfig> tablesRuleConfig;
 	private Map<String, Map<String, List<Object>>> columnValue 
 		= new HashMap<String, Map<String, List<Object>>>(2, 1);
+	
+	private final Map<Object, Object> evaluationParameter = Collections.emptyMap();
+	
+	private Map<String, Map<String, Map<Object, Set<Pair<Expression, ASTNode>>>>> columnValueIndex;
 	
     public PartitionKeyVisitor(Map<String, TableConfig> tables) {
         if (tables == null || tables.isEmpty()) {
@@ -179,7 +244,98 @@ public class PartitionKeyVisitor implements SQLASTVisitor{
 		// TODO Auto-generated method stub
 		return schemaTrimmed;
 	}
+	
+	
+    public Map<String, Map<Object, Set<Pair<Expression, ASTNode>>>> getColumnIndex(String tableNameUp) {
+        if (columnValueIndex == null) return Collections.emptyMap();
+        Map<String, Map<Object, Set<Pair<Expression, ASTNode>>>> index = columnValueIndex.get(tableNameUp);
+        if (index == null || index.isEmpty()) return Collections.emptyMap();
+        return index;
+    }
 
+    //**************************************************
+    private void limit(Limit limit) {
+        if (limit != null) {
+            Object lo = limit.getSize();
+            if (lo instanceof Expression) lo = ((Expression) lo).evaluation(evaluationParameter);
+            if (lo instanceof Number) limitSize = ((Number) lo).longValue();
+        }
+    }
+    
+    private void visitChild(int idLevel, boolean verdictColumn, boolean verdictGroupFunc, ASTNode... nodes){
+        if (nodes == null || nodes.length <= 0) return;
+        int oldLevel = this.idLevel;
+        boolean oldVerdict = this.verdictColumn;
+        boolean oldverdictGroupFunc = this.verdictGroupFunc;
+        this.idLevel = idLevel;
+        this.verdictColumn = verdictColumn;
+        this.verdictGroupFunc = verdictGroupFunc;
+        try {
+            for (ASTNode node : nodes) {
+                if (node != null) node.accept(this);
+            }
+        } finally {
+            this.verdictColumn = oldVerdict;
+            this.idLevel = oldLevel;
+            this.verdictGroupFunc = oldverdictGroupFunc;
+        }
+    }
+    
+    private void visitChild(int idLevel, boolean verdictColumn, boolean verdictGroupFunc, List<? extends ASTNode> nodes){
+        if (nodes == null || nodes.isEmpty()) return;
+        int oldLevel = this.idLevel;
+        boolean oldVerdict = this.verdictColumn;
+        boolean oldverdictGroupFunc = this.verdictGroupFunc;
+        this.idLevel = idLevel;
+        this.verdictColumn = verdictColumn;
+        this.verdictGroupFunc = verdictGroupFunc;
+        try {
+            for (ASTNode node : nodes) {
+                if (node != null) node.accept(this);
+            }
+        } finally {
+            this.verdictColumn = oldVerdict;
+            this.idLevel = oldLevel;
+            this.verdictGroupFunc = oldverdictGroupFunc;
+        }
+    }
+    
+	@Override
+	public void visit(DMLSelectStatement node) {
+		// TODO Auto-generated method stub
+		boolean verdictGroup = true;
+		
+		List<Expression> exprList = node.getSelectExprListWithoutAlias();
+        if (verdictGroupFunc) {
+            for (Expression expr : exprList) {
+                if (!isGroupFuncPassthroughSelect(expr)) {
+                    groupFuncType = GROUP_CANCEL;
+                    verdictGroup = false;
+                    break;
+                }
+            }
+            limit(node.getLimit());
+        }
+        visitChild(2, false, verdictGroupFunc && verdictGroup, exprList);
+
+        TableReference tr = node.getTables();
+        visitChild(1, verdictColumn, verdictGroupFunc && verdictGroup, tr);
+
+        Expression where = node.getWhere();
+        visitChild(2, verdictColumn, false, where);
+
+        GroupBy group = node.getGroup();
+        visitChild(2, false, false, group);
+
+        Expression having = node.getHaving();
+        visitChild(2, verdictColumn, false, having);
+
+        OrderBy order = node.getOrder();
+        visitChild(2, false, false, order);
+	}
+    
+    
+    
 	@Override
 	public void visit(BetweenAndExpression node) {
 		// TODO Auto-generated method stub
@@ -817,12 +973,6 @@ public class PartitionKeyVisitor implements SQLASTVisitor{
 	}
 
 	@Override
-	public void visit(DMLSelectStatement node) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void visit(DMLSelectUnionStatement node) {
 		// TODO Auto-generated method stub
 		
@@ -831,6 +981,25 @@ public class PartitionKeyVisitor implements SQLASTVisitor{
 	@Override
 	public void visit(DMLUpdateStatement node) {
 		// TODO Auto-generated method stub
+        TableReference tr = node.getTableRefs();
+        visitChild(1, false, false, tr);
+
+        List<Pair<Identifier, Expression>> assignmentList = node.getValues();
+        if (assignmentList != null && !assignmentList.isEmpty()) {
+            List<ASTNode> list = new ArrayList<ASTNode>(assignmentList.size() * 2);
+            for (Pair<Identifier, Expression> p : assignmentList) {
+                if (p == null) continue;
+                list.add(p.getKey());
+                list.add(p.getValue());
+            }
+            visitChild(2, false, false, list);
+        }
+
+        Expression where = node.getWhere();
+        visitChild(2, verdictColumn, false, where);
+
+        OrderBy order = node.getOrderBy();
+        visitChild(2, false, false, order);
 		
 	}
 
