@@ -28,7 +28,7 @@ public class ServerStartup {
             server.beforeStart(dateFormat);
 
             //startup
-            //server.startup();
+            server.startup();
         } catch (Throwable e) {
             SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
             LogLog.error(sdf.format(new Date()) + " startup error", e);
