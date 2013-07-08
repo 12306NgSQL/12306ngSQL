@@ -16,9 +16,14 @@
 package org.ng12306.sql.net;
 
 import java.io.IOException;
+import java.util.concurrent.ConcurrentMap;
 
+import org.ng12306.ngsql.statistic.CommandCount;
+import org.ng12306.ngsql.util.NameableExecutor;
 import org.ng12306.sql.net.buffer.BufferPool;
+import org.ng12306.sql.net.connection.BackendConnection;
 import org.ng12306.sql.net.connection.Connection;
+import org.ng12306.sql.net.connection.FrontendConnection;
 
 /**
  * 处理前端请求、释放资源等操作
@@ -35,6 +40,12 @@ public class Processor {
 	private BufferPool bufferPool;
 	private long netInBytes;
 	private long netOutBytes;
+	
+	private  ConcurrentMap<Long, FrontendConnection> frontends;
+    private  ConcurrentMap<Long, BackendConnection> backends;
+    
+    private  NameableExecutor handler;
+    private  CommandCount commands;
 	
 	public Processor(String name) throws IOException {
 		
@@ -68,5 +79,21 @@ public class Processor {
     
     public void addNetOutBytes(long bytes) {
         netOutBytes += bytes;
+    }
+    
+    public void addBackend(BackendConnection c) {
+        backends.put(c.getId(), c);
+    }
+    
+    public void addFrontend(FrontendConnection c) {
+        frontends.put(c.getId(), c);
+    }
+    
+    public NameableExecutor getHandler() {
+        return handler;
+    }
+    
+    public CommandCount getCommands() {
+        return commands;
     }
 }
