@@ -22,7 +22,8 @@ import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 
 import org.ng12306.sql.net.Processor;
-import org.ng12306.sql.net.connection.FrontendConnectionFactory;
+import org.ng12306.sql.net.factory.FrontendConnectionFactory;
+
 
 
 /**

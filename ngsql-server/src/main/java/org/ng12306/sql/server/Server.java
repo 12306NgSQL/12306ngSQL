@@ -37,12 +37,20 @@ public class Server {
 	private Processor[] processors;
     private Connector connector;
     private Acceptor server;
+    private final NgSqlConfig config;
+    
 	
 	public static final Server getInstance() {
         return INSTANCE;
     }
 	
-	private Server() {}
+	private Server() {
+		this.config = new NgSqlConfig();
+	}
+	
+	public NgSqlConfig getConfig() {
+		return this.config;
+	}
 	
 	/**
 	 * 处理一些预加载内容
@@ -61,13 +69,18 @@ public class Server {
         
         // startup processors
         LOGGER.info("Startup processors ...");
-        processors = new Processor[4];
+        processors = new Processor[Runtime.getRuntime().availableProcessors()];//线程数为CPU核数
         int handler = 2;
         int executor = 4;
         for (int i = 0; i < processors.length; i++) {
             processors[i] = new Processor("Processor" + i, handler, executor);
             processors[i].startup();
         }
+        
+        ServerConnectionFactory sf = new ServerConnectionFactory();
+        server = new Acceptor(NAME + "Server", 8066, sf);
+        server.setProcessors(processors);
+        server.start();
 	}
 
 	public Processor[] getProcessors() {
