@@ -42,7 +42,7 @@ public abstract class FrontendConnectionFactory {
 
     protected abstract FrontendConnection getConnection(SocketChannel channel);
 
-    public Connection make(SocketChannel channel) throws IOException {
+    public FrontendConnection make(SocketChannel channel) throws IOException {
         Socket socket = channel.socket();
         socket.setReceiveBufferSize(socketRecvBuffer);
         socket.setSendBufferSize(socketSendBuffer);

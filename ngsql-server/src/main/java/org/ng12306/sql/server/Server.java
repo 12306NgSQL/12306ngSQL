@@ -79,7 +79,7 @@ public class Server {
         
         ServerConnectionFactory sf = new ServerConnectionFactory();
         server = new Acceptor(NAME + "Server", 8066, sf);
-//        server.setProcessors(processors);
+        server.setProcessors(processors);
         server.start();
 	}
 

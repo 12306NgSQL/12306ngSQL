@@ -25,7 +25,6 @@ import java.nio.channels.SocketChannel;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.spi.LoggerFactory;
 import org.ng12306.sql.net.connection.FrontendConnection;
 import org.ng12306.sql.net.factory.FrontendConnectionFactory;
 
@@ -55,6 +54,10 @@ public class Acceptor extends Thread {
         this.serverChannel.configureBlocking(false);
         this.serverChannel.register(selector, SelectionKey.OP_ACCEPT);
         this.factory = factory;
+    }
+    
+    public void setProcessors(Processor[] processors) {
+        this.processors = processors;
     }
     
     @Override
@@ -89,7 +92,7 @@ public class Acceptor extends Thread {
         try {
             channel = serverChannel.accept();
             channel.configureBlocking(false);
-            FrontendConnection c = (FrontendConnection) factory.make(channel);
+            FrontendConnection c = factory.make(channel);
             c.setAccepted(true);
             c.setId(ID_GENERATOR.getId());
             Processor processor = nextProcessor();
