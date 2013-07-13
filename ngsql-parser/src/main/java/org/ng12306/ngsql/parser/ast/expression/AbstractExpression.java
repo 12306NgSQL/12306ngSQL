@@ -24,7 +24,7 @@ import java.util.Map;
 * @date: 2013-5-25 上午4:00:23
 * @version: 1.0
  */
-public abstract class AbstractExpression implements Expression {
+public abstract class AbstractExpression implements Expression {//
     private boolean cacheEvalRst = true;
     private boolean evaluated;
     private Object evaluationCache;
