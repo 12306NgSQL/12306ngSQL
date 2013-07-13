@@ -52,6 +52,11 @@ public class Reactor {
         new Thread(reactorW, name + "-W").start();
     }
     
+    final void postRegister(Connection c) {
+        reactorR.registerQueue.offer(c);
+        reactorR.selector.wakeup();
+    }
+    
     private final class R implements Runnable {
         private final Selector selector;
         private final BlockingQueue<Connection> registerQueue;

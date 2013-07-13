@@ -328,7 +328,7 @@ public abstract class FrontendConnection extends AbstractConnection {
     }
 
     @Override
-    protected void idleCheck() {
+    public void idleCheck() {
         if (isIdleTimeout()) {
             LOGGER.warn(toString() + " idle timeout");
             close();

@@ -134,7 +134,7 @@ public abstract class BackendConnection extends AbstractConnection {
     }
 
     @Override
-    protected void idleCheck() {
+    public void idleCheck() {
         // nothing
     }
 }

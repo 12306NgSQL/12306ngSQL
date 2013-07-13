@@ -185,12 +185,12 @@ public class ServerConnection extends FrontendConnection {
      *            发起者为null表示是自己
      */
     public void cancel(final FrontendConnection sponsor) {
-//        processor.getExecutor().execute(new Runnable() {
-//            @Override
-//            public void run() {
-//                session.cancel(sponsor);
-//            }
-//        });
+        processor.getExecutor().execute(new Runnable() {
+            @Override
+            public void run() {
+                session.cancel(sponsor);
+            }
+        });
     }
 
     @Override
@@ -222,12 +222,12 @@ public class ServerConnection extends FrontendConnection {
     @Override
     public boolean close() {
         if (super.close()) {
-//            processor.getExecutor().execute(new Runnable() {
-//                @Override
-//                public void run() {
-//                    session.terminate();
-//                }
-//            });
+            processor.getExecutor().execute(new Runnable() {
+                @Override
+                public void run() {
+                    session.terminate();
+                }
+            });
             return true;
         } else {
             return false;
