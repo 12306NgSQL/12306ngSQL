@@ -20,6 +20,7 @@
     <module>ngsql-parser</module>
     <module>ngsql-route</module>
     <module>ngsql-server</module>
+    <module>ngsql-util</module>
   </modules>
 
   <dependencies>
