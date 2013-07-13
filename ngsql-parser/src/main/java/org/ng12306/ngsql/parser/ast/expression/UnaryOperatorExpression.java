@@ -17,7 +17,7 @@ package org.ng12306.ngsql.parser.ast.expression;
 
 import java.util.Map;
 
-import com.alibaba.cobar.parser.visitor.SQLASTVisitor;
+import org.ng12306.ngsql.parser.visitor.SQLASTVisitor;
 
 /**
  * 

@@ -71,10 +71,4 @@ public class CaseWhenOperatorExpression extends PrimaryExpression {
     public void accept(SQLASTVisitor visitor) {
         visitor.visit(this);
     }
-
-	@Override
-	public void accept(org.ng12306.ngsql.parser.visitor.SQLASTVisitor visitor) {
-		// TODO Auto-generated method stub
-		
-	}
 }
