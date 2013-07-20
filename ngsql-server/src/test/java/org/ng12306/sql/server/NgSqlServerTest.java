@@ -16,7 +16,6 @@ public class NgSqlServerTest implements Runnable {
 		serverSocket = new ServerSocket(port);
 	}
 
-	@Override
 	public void run() {
 		while (true) {
             try {
@@ -44,7 +43,6 @@ public class NgSqlServerTest implements Runnable {
             this.writeBuffer = new byte[4096];
         }
 
-        @Override
         public void run() {
             try {
             	System.out.println("接收到客户端请求");
