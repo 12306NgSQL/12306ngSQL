@@ -30,7 +30,7 @@ public class Client {
 			if("exit".equals(str)){
 				break;
 			}
-			int len = in.read(cbuf);
+			int len = in.read(cbuf);   
 			if(len != -1) {
 				System.out.println(cbuf);
 			}
