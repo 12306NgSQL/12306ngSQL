@@ -15,13 +15,26 @@
  */
 package org.ng12306.ngsql.route.function;
 
+import java.util.List;
+
+import org.ng12306.ngsql.parser.ast.expression.Expression;
+import org.ng12306.ngsql.parser.ast.expression.primary.function.FunctionExpression;
+import org.ng12306.ngsql.route.util.PartitionUtil;
+
 /*-
  * 数据库拆分抽象类，对应rule.xml的function字段
  * @author:Fredric
  * @date: 2013-5-17
  */
-public abstract class PartitionFunction {
+public abstract class PartitionFunction extends FunctionExpression {
+	
+	protected PartitionUtil partitionUtil;
 	   
+	   public PartitionFunction(String functionName, List<Expression> arguments) {
+		super(functionName, arguments);
+		// TODO Auto-generated constructor stub
+	}
+
 	   protected int count; //rule.xml的partitionCount字段
 	   protected int length;//rule.xml的partitionLength字段
 	   
@@ -31,5 +44,14 @@ public abstract class PartitionFunction {
 
 	    public void setPartitionLength(String partitionLength) {
 	        this.length = Integer.parseInt(partitionLength);
+	    }
+	    
+	    @Override
+	    public void init() {
+	        partitionUtil = new PartitionUtil(count, length);
+	    }
+
+	    protected int partitionIndex(long hash) {
+	        return partitionUtil.partition(hash);
 	    }
 }
