@@ -77,6 +77,12 @@ public class Server {
             processors[i].startup();
         }
         
+        //startup connector
+        LOGGER.info("Startup connector...");
+        connector = new Connector(NAME + "Connector");
+        connector.setProcessors(processors);
+        connector.start();
+        
         ServerConnectionFactory sf = new ServerConnectionFactory();
         server = new Acceptor(NAME + "Server", 8066, sf);
         server.setProcessors(processors);
