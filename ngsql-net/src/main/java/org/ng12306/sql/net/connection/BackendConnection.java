@@ -23,7 +23,6 @@ import java.nio.channels.SocketChannel;
 
 import org.ng12306.ngsql.util.ErrorCode;
 import org.ng12306.ngsql.util.TimeUtil;
-import org.ng12306.sql.net.AbstractConnection;
 import org.ng12306.sql.net.Connector;
 import org.ng12306.sql.net.Handler;
 import org.ng12306.sql.net.Processor;

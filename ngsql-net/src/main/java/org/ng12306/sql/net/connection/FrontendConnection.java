@@ -29,7 +29,6 @@ import org.ng12306.ngsql.util.ErrorCode;
 import org.ng12306.ngsql.util.NameableExecutor;
 import org.ng12306.ngsql.util.RandomUtil;
 import org.ng12306.ngsql.util.TimeUtil;
-import org.ng12306.sql.net.AbstractConnection;
 import org.ng12306.sql.net.Handler;
 import org.ng12306.sql.net.Processor;
 import org.ng12306.sql.net.handler.Authenticator;
