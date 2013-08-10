@@ -15,6 +15,7 @@
  */
 package org.ng12306.sql.server;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLSyntaxErrorException;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,6 +46,8 @@ public class ConfigInitializer {
     private volatile Map<String, DataSourceConfig> dataSources;
 
     public ConfigInitializer() {
+    	
+    	ConfigLoader configLoader = new ConfigLoader();
         //SchemaLoader schemaLoader = new XMLSchemaLoader();
        // XMLConfigLoader configLoader = new XMLConfigLoader(schemaLoader);
        // try {
@@ -53,11 +56,11 @@ public class ConfigInitializer {
       //  } catch (SQLSyntaxErrorException e) {
        //     throw new ConfigException(e);
       //  }
-//        this.system = configLoader.getSystemConfig();
-//        this.users = configLoader.getUserConfigs();
-//        this.schemas = configLoader.getSchemaConfigs();
-//        this.dataSources = configLoader.getDataSources();
-//        this.quarantine = configLoader.getQuarantineConfig();
+		this.system 	 = configLoader.getSystemConfig();
+		this.users 		 = configLoader.getUserConfigs();
+		this.schemas 	 = configLoader.getSchemaConfigs();
+		this.dataSources = configLoader.getDataSources();
+		this.quarantine  = configLoader.getQuarantineConfig();
 //        this.cluster = initCobarCluster(configLoader);
 //
 //        this.checkConfig();
