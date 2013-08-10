@@ -17,6 +17,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+
 public class ConfigUtil {
 	public static Document getDocument(final InputStream dtd, InputStream xml) 
 			throws ParserConfigurationException, SAXException, IOException
@@ -52,5 +53,23 @@ public class ConfigUtil {
 	        } else {
 	            return null;
 	        }
-	    }	  	  
+	    }
+	  
+	    public static Map<String, Object> loadElements(Element parent) {
+	        Map<String, Object> map = new HashMap<String, Object>();
+	        NodeList children = parent.getChildNodes();
+	        for (int i = 0; i < children.getLength(); i++) {
+	            Node node = children.item(i);
+	            if (node instanceof Element) {
+	                Element e = (Element) node;
+	                String name = e.getNodeName();
+	                if ("property".equals(name)) {
+	                    String key = e.getAttribute("name");
+	                    String value = e.getTextContent();
+	                    map.put(key, value);
+	                }
+	            }
+	        }
+	        return map;
+	    }
 }
