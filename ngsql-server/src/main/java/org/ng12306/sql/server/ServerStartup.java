@@ -5,7 +5,8 @@ import java.nio.channels.ServerSocketChannel;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.apache.log4j.helpers.LogLog;
+import org.apache.log4j.Logger;
+
 
 /**
  * 
@@ -16,6 +17,8 @@ import org.apache.log4j.helpers.LogLog;
  */
 public class ServerStartup {
 
+	private static final Logger LOGGER = Logger.getLogger(ServerStartup.class);
+	
 	private static final String dateFormat = "yyyy-MM-dd HH:mm:ss";
 
     public static void main(String[] args) {
@@ -23,7 +26,7 @@ public class ServerStartup {
             // init
         	ServerSocketChannel serverChannel = ServerSocketChannel.open();
         	serverChannel.socket().bind(new InetSocketAddress(9066));
-        	System.setProperty("server.home", "D:\\dev\\jdworkspace6\\ngsql-server");
+        	System.setProperty("server.home", "C:\\Users\\lvbo\\git\\12306NgSQL\\ngsql-server");
             Server server = Server.getInstance();
             server.beforeStart(dateFormat);
 
@@ -31,7 +34,7 @@ public class ServerStartup {
             server.startup();
         } catch (Throwable e) {
             SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
-            LogLog.error(sdf.format(new Date()) + " startup error", e);
+            LOGGER.error(sdf.format(new Date()) + " startup error", e);
             System.exit(-1);
         }
     }
