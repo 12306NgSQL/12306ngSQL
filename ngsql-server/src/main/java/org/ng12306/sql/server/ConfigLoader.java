@@ -1,9 +1,23 @@
+/*
+* Copyright 2012-2013 NgSql Group.
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.ng12306.sql.server;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,6 +40,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+
 /*-
  * 加载server.xml和schema.xml中的撇脂项
  * 2013-8-7
@@ -44,12 +59,14 @@ public final class ConfigLoader {
 	private final Map<String, UserConfig> users;
 	private Map<String, SchemaConfig> schemas;
 	private Map<String, DataSourceConfig> dataSources;
+	private final Map<String, TableRuleConfig> tableRules;
 	
 	public ConfigLoader(){
 		this.system = new SystemConfig();
 		this.users  = new HashMap<String, UserConfig>();
 		this.schemas= new HashMap<String, SchemaConfig>();
 		this.dataSources = new HashMap<String, DataSourceConfig>();
+		this.tableRules  = new HashMap<String, TableRuleConfig>();
 		
 		serverdtd = RuleLoader.class.getResourceAsStream("/server.dtd");
         serverxml = RuleLoader.class.getResourceAsStream("/server.xml");
@@ -146,7 +163,7 @@ public final class ConfigLoader {
 	}
 	
 	void loadSchemaConfigs(){
-        NodeList list = root.getElementsByTagName("schema");
+        NodeList list = schemaroot.getElementsByTagName("schema");
         for (int i = 0, n = list.getLength(); i < n; i++) {
             Element schemaElement = (Element) list.item(i);
             String name = schemaElement.getAttribute("name");
@@ -172,7 +189,31 @@ public final class ConfigLoader {
 	}
 	
 	private Map<String, org.ng12306.ngsql.route.config.TableConfig> loadTables(Element node) {
-		return null;	
+		Map<String, org.ng12306.ngsql.route.config.TableConfig> tables 
+			= new HashMap<String, org.ng12306.ngsql.route.config.TableConfig>();
+		
+		NodeList nodeList = node.getElementsByTagName("table");
+		
+		for(int i = 0; i < nodeList.getLength(); i++){
+            Element tableElement = (Element) nodeList.item(i);
+            String name = tableElement.getAttribute("name").toUpperCase();
+            String dataNode = tableElement.getAttribute("dataNode");
+            TableRuleConfig tableRule = null;
+            
+            if(tableElement.hasAttribute("rule")){
+                String ruleName = tableElement.getAttribute("rule");
+                tableRule = tableRules.get(ruleName);
+            }
+            
+            String[] tableNames = SplitUtil.split(name, ',', true);
+            for (String tableName : tableNames) {
+            	org.ng12306.ngsql.route.config.TableConfig table
+            		= new org.ng12306.ngsql.route.config.TableConfig(tableName, dataNode, tableRule);
+                tables.put(table.getName(), table);
+            }                    
+		}
+		
+	    return tables;
 	}
 	
 		
@@ -180,8 +221,51 @@ public final class ConfigLoader {
 		return schemas;
 	}
 	
+    private Element findPropertyByName(Element bean, String name) {
+        NodeList propertyList = bean.getElementsByTagName("property");
+        for (int j = 0, m = propertyList.getLength(); j < m; ++j) {
+            Node node = propertyList.item(j);
+            if (node instanceof Element) {
+                Element p = (Element) node;
+                if (name.equals(p.getAttribute("name"))) {
+                    return p;
+                }
+            }
+        }
+        return null;
+    }
+	
 	void loadDataSource(){
-		
+		NodeList dataSourceList = schemaroot.getElementsByTagName("dataSource");
+		for (int i = 0, n = dataSourceList.getLength(); i < n; i++) {		
+			Element element = (Element) dataSourceList.item(i);
+			String dsNamePrefix = element.getAttribute("name");
+			
+            Element locElement = findPropertyByName(element, "location");
+            NodeList locationList = locElement.getElementsByTagName("location");
+            
+            Element usr = findPropertyByName(element, "user");
+            Element password = findPropertyByName(element, "password");
+            Element sqlmode  = findPropertyByName(element, "sqlMode");
+            
+            for(int j = 0; j < locationList.getLength(); j++){
+            	DataSourceConfig channel = new DataSourceConfig();
+            	
+                String locStr = ((Element) locationList.item(j)).getTextContent();
+                int colonIndex = locStr.indexOf(':');
+                int slashIndex = locStr.indexOf('/');
+                String dsHost = locStr.substring(0, colonIndex).trim();
+                String dnNpde = locStr.substring(slashIndex+1, locStr.length());
+                int dsPort = Integer.parseInt(locStr.substring(colonIndex + 1, slashIndex).trim());
+                
+                channel.setHost(dsHost);
+                channel.setPort(dsPort);
+                channel.setName(usr.getTextContent());
+                channel.setPassword(password.getTextContent());
+                channel.setSqlMode(sqlmode.getTextContent());
+                                   	
+            }                 
+		}
 	}
 	
 	public Map<String, DataSourceConfig> getDataSources(){
