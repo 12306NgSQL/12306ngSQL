@@ -36,7 +36,7 @@ import org.ng12306.sql.net.connection.FrontendConnection;
  */
 public class Processor {
 
-	private static final int DEFAULT_BUFFER_SIZE = 1024 * 1024 * 16;
+	private static final int DEFAULT_BUFFER_SIZE = 512 * 1024 * 16;
     private static final int DEFAULT_BUFFER_CHUNK_SIZE = 4096;
     private static final int AVAILABLE_PROCESSORS = Runtime.getRuntime().availableProcessors();
     

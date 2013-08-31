@@ -68,17 +68,17 @@ public final class ConfigLoader {
 		this.dataSources = new HashMap<String, DataSourceConfig>();
 		this.tableRules  = new HashMap<String, TableRuleConfig>();
 		
-		serverdtd = RuleLoader.class.getResourceAsStream("/server.dtd");
-        serverxml = RuleLoader.class.getResourceAsStream("/server.xml");
+		serverdtd = RuleLoader.class.getResourceAsStream("server.dtd");
+        serverxml = RuleLoader.class.getResourceAsStream("server.xml");
         
-		schemadtd = RuleLoader.class.getResourceAsStream("/schema.dtd");
-        schemaxml = RuleLoader.class.getResourceAsStream("/schema.xml");
+		schemadtd = RuleLoader.class.getResourceAsStream("schema.dtd");
+        schemaxml = RuleLoader.class.getResourceAsStream("schema.xml");
         
         
         try {
 			root = ConfigUtil.getDocument(serverdtd, serverxml).getDocumentElement();
 			schemaroot = ConfigUtil.getDocument(schemadtd, schemaxml).getDocumentElement();
-			loadSystemConfig();
+			//loadSystemConfig();
 			loadUserConfigs();
 			loadSchemaConfigs();
 			loadDataSource();
@@ -91,25 +91,10 @@ public final class ConfigLoader {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (IllegalArgumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} 
 	}
 	
 	public void loadSystemConfig() throws NoSuchMethodException, SecurityException, ClassNotFoundException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
