@@ -17,12 +17,13 @@ public class Client {
 	 * @throws UnknownHostException 
 	 */
 	public static void main(String[] args) throws UnknownHostException, IOException {
-		Socket socket = new Socket("localhost", 12306);
+		Socket socket = new Socket("localhost", 8066);
 		BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
 		char[] cbuf = new char[1024];
-		
+		//select id from t1
+		//"select id,member_id from t1 limit 1
 		while (true) {
 			String str = bf.readLine();
 			out.println(str);
