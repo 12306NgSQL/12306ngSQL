@@ -218,6 +218,7 @@ public class AbstractConnection implements Connection {
 
     @Override
     public void write(ByteBuffer buffer) {
+    	System.out.println("buffer="+buffer.toString());
         if (isClosed.get()) {
             processor.getBufferPool().recycle(buffer);
             return;

@@ -16,7 +16,6 @@
 package org.ng12306.ngsql.route;
 
 import java.sql.SQLNonTransientException;
-import java.sql.SQLSyntaxErrorException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,6 +27,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.ng12306.ngsql.parser.ast.ASTNode;
+import org.ng12306.ngsql.parser.ast.expression.BinaryOperatorExpression;
 import org.ng12306.ngsql.parser.ast.expression.Expression;
 import org.ng12306.ngsql.parser.ast.expression.ReplacableExpression;
 import org.ng12306.ngsql.parser.ast.stmt.SQLStatement;
@@ -36,6 +36,7 @@ import org.ng12306.ngsql.parser.recognizer.SQLParserDelegate;
 import org.ng12306.ngsql.parser.recognizer.syntax.SQLParser;
 import org.ng12306.ngsql.parser.util.Pair;
 import org.ng12306.ngsql.parser.visitor.MySQLOutputASTVisitor;
+import org.ng12306.ngsql.route.config.DataNode;
 import org.ng12306.ngsql.route.config.SchemaConfig;
 import org.ng12306.ngsql.route.config.TableConfig;
 import org.ng12306.ngsql.route.config.TableRuleConfig;
@@ -48,10 +49,24 @@ import org.ng12306.ngsql.route.visitor.PartitionKeyVisitor;
  */
 public final class ServerRouter {
 	
-	public static RouteResultset route(SchemaConfig schema, String charset,String stmt) 
+	public static RouteResultset route(String charset,String stmt) 
 			throws SQLNonTransientException{
 		
+		System.out.println("rout charset=" + charset);
+		
 		RouteResultset rrs = new RouteResultset(stmt);
+		//初始化路由数据
+		List<DataNode> dataNodes = new ArrayList<DataNode>();
+		DataNode dataNode = new DataNode("dbtest1", "test", "test", "dbtest");
+		dataNodes.add(dataNode);
+		Map<String, TableConfig> hm = new HashMap<String, TableConfig>();
+		RuleConfig ruleConfig = new RuleConfig(new String[]{"id", "gmt"}, new BinaryOperatorExpression());
+		RuleConfig[] rules = new RuleConfig[1];
+		rules[0] = ruleConfig;
+		TableRuleConfig tableRuleConfig = new TableRuleConfig("dbtest", rules);
+		TableConfig tableConfig = new TableConfig("dbtest","dbtest1,dbtest2,dbtest3", tableRuleConfig);
+		hm.put("tb1", tableConfig);
+		SchemaConfig schema = new SchemaConfig("name", dataNodes, hm);
 		
 		/*生成AST，通过SQLLexer的词法分析和parse的语法分析*/
         SQLStatement ast = SQLParserDelegate.parse(stmt, charset == null ? SQLParser.DEFAULT_CHARSET : charset);
@@ -109,10 +124,10 @@ public final class ServerRouter {
         
         //分库
         if (dnMap.size() == 1) {
-            String dataNode = matchedTable.getDataNodes()[dnMap.keySet().iterator().next()];
+            String strdataNode = matchedTable.getDataNodes()[dnMap.keySet().iterator().next()];
             String sql = visitor.isSchemaTrimmed() ? genSQL(ast, stmt) : stmt;
             RouteResultsetNode[] rn = new RouteResultsetNode[1];
-            rn[0] = new RouteResultsetNode(dataNode, sql);
+            rn[0] = new RouteResultsetNode(strdataNode, sql);
             rrs.setNodes(rn);
         } else {
             RouteResultsetNode[] rn = new RouteResultsetNode[dnMap.size()];

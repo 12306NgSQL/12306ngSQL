@@ -25,10 +25,14 @@ import java.util.Map;
 * @version: 1.0
  */
 public  class BinaryOperatorExpression extends AbstractExpression {
-    protected final Expression leftOprand;
-    protected final Expression rightOprand;
-    protected final int precedence;
-    protected final boolean leftCombine;
+
+    protected Expression leftOprand;
+    protected Expression rightOprand;
+    protected int precedence;
+    protected boolean leftCombine;  
+    
+    public BinaryOperatorExpression() {}
+
 
     /**
      * {@link #leftCombine} is true

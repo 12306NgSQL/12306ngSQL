@@ -21,6 +21,8 @@ import java.sql.SQLNonTransientException;
 
 import org.apache.log4j.Logger;
 import org.ng12306.ngsql.model.SchemaConfig;
+import org.ng12306.ngsql.route.RouteResultset;
+import org.ng12306.ngsql.route.ServerRouter;
 import org.ng12306.ngsql.util.ErrorCode;
 import org.ng12306.ngsql.util.TimeUtil;
 import org.ng12306.sql.net.connection.FrontendConnection;
@@ -139,16 +141,16 @@ public class ServerConnection extends FrontendConnection {
 //        }
 
         // 路由计算
-//        RouteResultset rrs = null;
-//        try {
-//            rrs = ServerRouter.route(schema, sql, this.charset, this);
-//        } catch (SQLNonTransientException e) {
+        RouteResultset rrs = null;
+        try {
+            rrs = ServerRouter.route(sql, this.charset);
+        } catch (SQLNonTransientException e) {
 //            StringBuilder s = new StringBuilder();
 //            LOGGER.warn(s.append(this).append(sql).toString(), e);
 //            String msg = e.getMessage();
 //            writeErrMessage(ErrorCode.ER_PARSE_ERROR, msg == null ? e.getClass().getSimpleName() : msg);
 //            return;
-//        }
+        }
 
         // session执行
         //session.execute(rrs, type);
