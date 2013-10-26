@@ -26,7 +26,7 @@ import java.util.Map;
 * @date: 2013-5-22 上午5:55:33
 * @version: 1.0
  */
-public abstract class PolyadicOperatorExpression extends AbstractExpression {
+public class PolyadicOperatorExpression extends AbstractExpression {
     protected List<Expression> operands;
     protected final int precedence;
 
@@ -80,7 +80,9 @@ public abstract class PolyadicOperatorExpression extends AbstractExpression {
         return precedence;
     }
 
-    public abstract String getOperator();
+    public String getOperator() {
+    	return new String();
+    }
 
     @Override
     protected Object evaluationInternal(Map<? extends Object, ? extends Object> parameters) {

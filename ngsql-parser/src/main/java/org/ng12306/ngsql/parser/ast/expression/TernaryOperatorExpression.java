@@ -27,7 +27,7 @@ import java.util.Map;
 * @date: 2013-5-26 上午11:29:59
 * @version: 1.0
  */
-public abstract class TernaryOperatorExpression extends AbstractExpression {
+public  class TernaryOperatorExpression extends AbstractExpression {
     private final Expression first;
     private final Expression second;
     private final Expression third;

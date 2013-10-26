@@ -26,7 +26,7 @@ import org.ng12306.ngsql.parser.visitor.SQLASTVisitor;
 * @date: 2013-5-26 上午11:30:18
 * @version: 1.0
  */
-public abstract class UnaryOperatorExpression extends AbstractExpression {
+public class UnaryOperatorExpression extends AbstractExpression {
     private final Expression operand;
     protected final int precedence;
 
@@ -45,7 +45,9 @@ public abstract class UnaryOperatorExpression extends AbstractExpression {
         return precedence;
     }
 
-    public abstract String getOperator();
+    public String getOperator() {
+    	return new String();
+    }
 
     @Override
     public Object evaluationInternal(Map<? extends Object, ? extends Object> parameters) {

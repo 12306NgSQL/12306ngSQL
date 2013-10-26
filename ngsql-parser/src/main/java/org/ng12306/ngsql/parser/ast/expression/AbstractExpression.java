@@ -17,6 +17,8 @@ package org.ng12306.ngsql.parser.ast.expression;
 
 import java.util.Map;
 
+import org.ng12306.ngsql.parser.visitor.SQLASTVisitor;
+
 /**
  * 
 * [添加说明]
@@ -24,7 +26,7 @@ import java.util.Map;
 * @date: 2013-5-25 上午4:00:23
 * @version: 1.0
  */
-public abstract class AbstractExpression implements Expression {//
+public class AbstractExpression implements Expression {//
     private boolean cacheEvalRst = true;
     private boolean evaluated;
     private Object evaluationCache;
@@ -48,6 +50,21 @@ public abstract class AbstractExpression implements Expression {//
         return evaluationInternal(parameters);
     }
 
-    protected abstract Object evaluationInternal(Map<? extends Object, ? extends Object> parameters);
+     protected Object evaluationInternal(Map<? extends Object, ? extends Object> parameters) {
+    	 
+    	 return parameters;
+     }
+
+	@Override
+	public void accept(SQLASTVisitor visitor) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int getPrecedence() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
 }

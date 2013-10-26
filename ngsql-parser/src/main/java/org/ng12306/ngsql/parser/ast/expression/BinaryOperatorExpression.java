@@ -24,11 +24,13 @@ import java.util.Map;
 * @date: 2013-5-22 上午5:54:24
 * @version: 1.0
  */
-public abstract class BinaryOperatorExpression extends AbstractExpression {
-    protected final Expression leftOprand;
-    protected final Expression rightOprand;
-    protected final int precedence;
-    protected final boolean leftCombine;
+public  class BinaryOperatorExpression extends AbstractExpression {
+    protected Expression leftOprand;
+    protected Expression rightOprand;
+    protected int precedence;
+    protected boolean leftCombine;
+    
+    public BinaryOperatorExpression() {}
 
     /**
      * {@link #leftCombine} is true
@@ -65,7 +67,9 @@ public abstract class BinaryOperatorExpression extends AbstractExpression {
         return leftCombine;
     }
 
-    public abstract String getOperator();
+    public  String getOperator(){
+    	return new String();
+    }
 
     @Override
     public Object evaluationInternal(Map<? extends Object, ? extends Object> parameters) {
